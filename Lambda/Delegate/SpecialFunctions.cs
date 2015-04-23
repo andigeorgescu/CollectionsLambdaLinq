@@ -12,6 +12,8 @@ namespace Lambda.Delegate
      * Create a delegate called NumberCheck which returns a boolean and has a single parameter of type int
      */
 
+    public delegate bool NumberCheck(int x);
+
     public class SpecialFunctions
     {
         public static double Sum(double val1, double val2)
@@ -46,10 +48,28 @@ namespace Lambda.Delegate
          * Create a function which checks if an integer is even. The function will return True for even numbers and False for odd numbers.
          */
 
+        public static bool EvenNumber(int x)
+        {
+            if (x%2 == 0) return true;
+            else return false;
+
+        }
         /**
          * TODO 3:
          * Create a function called GetEvenNumbers which uses an instance of a NumberCheck delegate and an aray list of integers.
          * The function will return a list with the even numbers.
          */
+
+        public static List<int> GetEvenNumbers(NumberCheck fct, List<int> numbers)
+        {
+            List<int> evenNumbers=new List<int>();
+            foreach (var number in numbers)
+            {
+                if (fct(number)) evenNumbers.Add(number) ;
+                
+            }
+            return evenNumbers;
+ 
+        }
     }
 }

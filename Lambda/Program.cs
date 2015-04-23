@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Lambda.Delegate;
 using System.Collections;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Lambda
 {
@@ -44,10 +46,15 @@ namespace Lambda
 
             //TODO 4: Create an instance of NumberCheck (TODO 1)
 
+            NumberCheck NumberCheckfct = new NumberCheck(SpecialFunctions.EvenNumber);
+
             //TODO 5: Use function GetEvenNumbers to select the even numbers from numbersList collection
             List<int> numbersList = new List<int>(new int[] { 0, 1, 2, 6, 8, 9, 21, 24, 10 });
-
+            List<int> evenNumbers = new List<int>();
+            evenNumbers = SpecialFunctions.GetEvenNumbers(NumberCheckfct,numbersList);
             //TODO 6: Print the resulted numbers
+            foreach(var number in evenNumbers)
+                Console.WriteLine(number);
 
 
             Console.WriteLine();
@@ -88,6 +95,8 @@ namespace Lambda
              * TODO 7 
              * Create an instance of function created at TODO 2 and use it to print the odd numbers from numbersList collection
              */
+            //Funct... HW
+
 
             Console.WriteLine();
         }
@@ -131,13 +140,23 @@ namespace Lambda
              * TODO 8 
              * Create an instance of function created at TODO 2 and use it to print the odd numbers from numbersList collection
              */
+            NumberCheck checkEvenNumber = delegate(int x)
+            {
+                if (x%2 == 0) return true;
+                else return false;
+            };
+            List<int> evenNumbers2 = new List<int>();
+            evenNumbers2 = SpecialFunctions.GetEvenNumbers(checkEvenNumber, numbersList);
+            
+            foreach(var number in evenNumbers2)
+            {  Console.WriteLine(number);}
 
             //Omitting the explicit creation of a Func instance
             Console.Write("{0} - {1} = ", val1, val2);
             SpecialFunctions.ExecuteFunctionUsingFunc(delegate(double var1, double var2) {return var1 + var2; },
                                                       val1,
                                                       val2);
-
+            
             Console.WriteLine();
         }
 
@@ -190,12 +209,36 @@ namespace Lambda
              * Create a lambda expression which receives two parameters and returns the biggest number
              * and use it to extract the biggest number from numbersList collection.
              */
-
-
+            Func<int,int,int> compare = (x, y) =>
+            {
+                if (x > y) return x;
+                else return y;
+            };
+            int tempx=numbersList[0];
+            foreach (var number in numbersList)
+            {
+                tempx = compare(tempx, number);
+            }
+            Console.WriteLine(tempx);
             /**
              * TODO 10 (for home)
              * Use the lambda expression from TODO 9  to sort the collection ascending.
              */
+            Console.WriteLine("Homework:");
+            for( int i = 0; i<numbersList.Count-1; i++)
+                for (int j = i + 1; j < numbersList.Count; j++)
+                {
+                    if (compare(numbersList[i], numbersList[j]) == numbersList[i])
+                    {
+                        int aux = numbersList[i];
+                        numbersList[i] = numbersList[j];
+                        numbersList[j] = aux;
+
+                    }
+                }
+            foreach(var number in numbersList)
+                Console.WriteLine(number);
+            
  
             Console.WriteLine();
         }
@@ -226,7 +269,7 @@ namespace Lambda
         static void Main(string[] args)
         {
             //run Delegate example
-            DelegateExample();
+            //DelegateExample();
 
             ////run Func Delegate example
             //FuncDelegateExample();
@@ -235,7 +278,7 @@ namespace Lambda
             //AnonymousFunctExample();
 
             ////run Lambda expressions example
-            //LambdaExample();
+            LambdaExample();
 
             ////run Closure example
             //ClosureExample();

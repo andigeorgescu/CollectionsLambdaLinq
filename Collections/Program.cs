@@ -24,11 +24,11 @@ namespace Collections
 
         static void Main(string[] args)
         {
-            EnumerableExample();
+            //EnumerableExample();
             //YieldExample();
             //CollectionExample();
             //ListExample();
-            //DictionaryExample();
+            DictionaryExample();
         }
 
         private static void EnumerableExample()
@@ -114,10 +114,11 @@ namespace Collections
             var bandsList = new List<Band>(BandsArray);
 
             //Custom comparer example
-            bandsList.Sort(new BasicBandsComparer());
+            //bandsList.Sort(new BasicBandsComparer());
             //bandsList.Sort(new CustomBandsComparer(BandsCompareBy.Country));
             //bandsList.Sort(new CustomBandsComparer(BandsCompareBy.Name));
-            //bandsList.Sort(new CustomBandsComparer(BandsCompareBy.AlbumCount));
+           // bandsList.Sort(new CustomBandsComparer(BandsCompareBy.AlbumCount));
+              bandsList.Sort(new CustomBandsComparer(BandsCompareBy.NameLength));
 
             var index = 0;
             foreach (var band in bandsList)
@@ -181,8 +182,13 @@ namespace Collections
             Console.WriteLine();
 
             //TODO 7: Check if key is present before adding/retrieving a new entry.
-            //bandsDictionary.Add("Muse", new Band("Muse", 6, "Alternative Rock", "England"));
-            //Console.WriteLine(bandsDictionary["Guta"].Name);
+
+            if(bandsDictionary.ContainsKey("Guta"))
+                Console.WriteLine(bandsDictionary["Guta"].Name);
+
+            if(!bandsDictionary.ContainsKey("Muse"))
+                bandsDictionary.Add("Muse", new Band("Muse", 6, "Alternative Rock", "England"));
+           
         }
 
         private static IEnumerable<string> FrontmenList()
@@ -208,8 +214,13 @@ namespace Collections
 
         private static IEnumerable<Band> BritishBands(IEnumerable<Band> bandsList)
         {
-            yield return new Band("", 0, "", "");
-        }
+            int index = 0;
+            foreach (var band in bandsList)
+            {
+                if (band.Country == "England") yield return band;
+                index++;
+            }
+    }
 
     }
 }
