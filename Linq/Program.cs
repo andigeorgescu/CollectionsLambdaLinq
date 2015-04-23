@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 
 namespace Linq
@@ -36,9 +37,26 @@ namespace Linq
             };
         }
 
+        private static List<Member> GetMembers()
+        {
+            return new List<Member>
+            {
+                new Member(1, "Member1", 1),
+                new Member(2, "Member2", 1),
+                new Member(3, "Member3", 2),
+                new Member(4, "Member4", 3),
+                new Member(5, "Member5", 4),
+                new Member(6, "Member6", 4),
+                new Member(7, "Member7", 5),
+                new Member(8, "Member8", 6)
+            };
+        }
+
         private static readonly IEnumerable<Band> Bands = GetBands();
 
         private static readonly IEnumerable<Song> Songs = GetSongs();
+
+        private static readonly IEnumerable<Member> Members = GetMembers(); 
 
         static void Main(string[] args)
         {
@@ -64,6 +82,7 @@ namespace Linq
             //GroupByCountryLync1();
             //Console.WriteLine();
             //GroupByCountryLync2();
+            //GroupByGenreLync1();
 
             //GetSongsForBandsLinq1();
             //Console.WriteLine();
@@ -77,7 +96,15 @@ namespace Linq
             //Console.WriteLine();
             //GetSongsForAllBandsGroupJoin2();
 
+            //HOMEWORK
+            GetMembersForBandsLinq1();
+
             Console.ReadLine();
+
+            GetMembersForAllBandsGroupJoin1();
+
+            Console.ReadLine();
+
         }
 
         #region StartsWith
@@ -201,11 +228,30 @@ namespace Linq
         public static void GroupByGenreLync1()
         { 
             //.....Your code here......
+            var groupedBands = Bands.GroupBy(b => b.Genre).Select(g => new {Genre = g.Key, NumberOfBands = g.Count()});
+
+            foreach (var group in groupedBands)
+            {
+                Console.WriteLine("Gengre: " + group.Genre + " NumberOfBands: " + group.NumberOfBands);
+            }
         }
 
         public static void GroupByGenreLync2()
         {
             //.....Your code here......
+            var groupedBands =
+                        from band in Bands
+                        group band by band.Genre into bC
+                        select new
+                        {
+                            Genre = bC.Key,
+                            NumberOfBands = bC.Count()
+                        };
+
+            foreach (var group in groupedBands)
+            {
+                Console.WriteLine("Genre: " + group.Genre + " NumberOfBands: " + group.NumberOfBands);
+            }
         }
         
         #endregion
@@ -327,5 +373,40 @@ namespace Linq
 
         //HOME TODO - de creat entitatea Membru (Id, BandId, Name)
         //De implementat toate metodele de la join, group join Ex: (GetMembersForBandsLinq1)
+
+        public static void GetMembersForBandsLinq1()
+        {
+            var bandMemberResult = from band in Bands
+                                    join member in Members on band.Id equals member.BandId
+                            select new
+                            {
+                                Band = band.Name,
+                                Member = member.Name
+                            };
+
+            foreach (var bandMember in bandMemberResult)
+            {
+                Console.WriteLine("Band: " + bandMember.Band + " Member:" + bandMember.Member);
+            }
+
+            
+        }
+
+        public static void GetMembersForAllBandsGroupJoin1()
+        {
+            var bandMembersResult = from band in Bands
+                                  join member in Members on band.Id equals member.BandId into bandMembers
+                                  select new { BandName = band.Name, BandMembers = bandMembers };
+
+            foreach(var band in bandMembersResult)
+            {
+                Console.WriteLine(band.BandName);
+
+                foreach (var member in band.BandMembers)
+                {
+                    Console.WriteLine("---" + member.Name);
+                }
+            }
+        }
     }
 }
