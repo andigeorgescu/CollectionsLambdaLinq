@@ -50,7 +50,7 @@ namespace Lambda
 
             //TODO 5: Use function GetEvenNumbers to select the even numbers from numbersList collection
             List<int> numbersList = new List<int>(new int[] { 0, 1, 2, 6, 8, 9, 21, 24, 10 });
-            List<int> evenNumbers = new List<int>();
+            IEnumerable<int> evenNumbers = new List<int>();
             evenNumbers = SpecialFunctions.GetEvenNumbers(NumberCheckfct,numbersList);
             //TODO 6: Print the resulted numbers
             foreach(var number in evenNumbers)
@@ -147,9 +147,11 @@ namespace Lambda
             };
             List<int> evenNumbers2 = new List<int>();
             evenNumbers2 = SpecialFunctions.GetEvenNumbers(checkEvenNumber, numbersList);
-            
-            foreach(var number in evenNumbers2)
-            {  Console.WriteLine(number);}
+
+            foreach (var number in evenNumbers2)
+            {
+                Console.WriteLine(number);
+            }
 
             //Omitting the explicit creation of a Func instance
             Console.Write("{0} - {1} = ", val1, val2);

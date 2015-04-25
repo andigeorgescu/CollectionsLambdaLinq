@@ -214,11 +214,9 @@ namespace Collections
 
         private static IEnumerable<Band> BritishBands(IEnumerable<Band> bandsList)
         {
-            int index = 0;
             foreach (var band in bandsList)
             {
                 if (band.Country == "England") yield return band;
-                index++;
             }
     }
 
