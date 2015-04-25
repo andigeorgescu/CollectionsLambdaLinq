@@ -60,7 +60,7 @@ namespace Lambda.Delegate
          * The function will return a list with the even numbers.
          */
 
-        public static List<int> GetEvenNumbers(NumberCheck fct, List<int> numbers)
+        public static IEnumerable<int> GetEvenNumbers(NumberCheck fct, List<int> numbers)
         {
             List<int> evenNumbers=new List<int>();
             foreach (var number in numbers)
