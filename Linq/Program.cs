@@ -241,11 +241,11 @@ namespace Linq
             //.....Your code here......
             var groupedBands =
                         from band in Bands
-                        group band by band.Genre into bC
+                        group band by band.Genre into bG
                         select new
                         {
-                            Genre = bC.Key,
-                            NumberOfBands = bC.Count()
+                            Genre = bG.Key,
+                            NumberOfBands = bG.Count()
                         };
 
             foreach (var group in groupedBands)
